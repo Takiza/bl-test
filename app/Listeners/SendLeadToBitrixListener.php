@@ -29,7 +29,9 @@ class SendLeadToBitrixListener
     public function handle(RequestedCarCreatedEvent $event)
     {
         $client = new Client();
-        $uri = 'https://b24-w923r7.bitrix24.ua/rest/1/y29e0zpk9g4ysdfu/crm.lead.add.json?FIELDS[NAME]='. $event->data->name .
+        $webhookUri = config('api.bitrix_webhook');
+        $uri =  $webhookUri .
+            'crm.lead.add.json?FIELDS[NAME]='. $event->data->name .
             '&FIELDS[EMAIL][0][VALUE]=' . $event->data->email .
             '&FIELDS[PHONE][0][VALUE]='. $event->data->phone;
         $response = $client->request('GET', $uri);
